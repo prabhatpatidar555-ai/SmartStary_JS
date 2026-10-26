@@ -1,0 +1,122 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - SmartStay</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .confirmation-container {
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+
+        .success-icon {
+            font-size: 55px;
+            text-align: center;
+        }
+
+        .confirmation-container h1 {
+            text-align: center;
+            color: #16803d;
+        }
+
+        .booking-details {
+            background: #f3f6fb;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .booking-details p {
+            margin: 12px 0;
+        }
+
+        .total-amount {
+            font-size: 25px;
+            font-weight: bold;
+            color: #0866d9;
+        }
+
+        .home-button {
+            display: block;
+            text-align: center;
+            background: #0866d9;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .demo-note {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="confirmation-container">
+        <div class="success-icon">✅</div>
+        <h1>Booking Successful!</h1>
+        <p style="text-align:center;">
+            Your SmartStay demo booking details are below.
+        </p>
+
+        <div class="booking-details" id="bookingDetails">
+            Loading booking details...
+        </div>
+
+        <p class="demo-note">
+            This is a college project demo. No real reservation or payment was made.
+        </p>
+
+        <a href="index.html" class="home-button">Back to Home</a>
+    </div>
+
+    <script>
+        const booking = JSON.parse(
+            sessionStorage.getItem("smartstayBooking") || "null"
+        );
+
+        const details = document.getElementById("bookingDetails");
+
+        if (!booking) {
+            details.textContent =
+                "No booking details found. Please return to the home page and try again.";
+        } else {
+            const rows = [
+                ["Hotel", booking.hotel],
+                ["City", booking.city],
+                ["Check-in", booking.checkin],
+                ["Check-out", booking.checkout],
+                ["Nights", booking.nights],
+                ["Guests", booking.guests],
+                ["Price per night", "₹" + Number(booking.price).toLocaleString("en-IN")]
+            ];
+
+            details.replaceChildren();
+
+            rows.forEach(([label, value]) => {
+                const p = document.createElement("p");
+                p.textContent = label + ": " + value;
+                details.appendChild(p);
+            });
+
+            const total = document.createElement("p");
+            total.className = "total-amount";
+            total.textContent =
+                "Total Amount: ₹" +
+                Number(booking.total).toLocaleString("en-IN");
+            details.appendChild(total);
+        }
+    </script>
+</body>
+</html>
